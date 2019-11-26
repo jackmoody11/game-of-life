@@ -41,4 +41,11 @@ public interface SpotBoard extends Iterable<Spot> {
 
     Iterator<Spot> iterator();
 
+    void update();
+
+    public void setNextGeneration(int dieLessThanThresh,
+                                  int dieGreaterThanThresh,
+                                  int liveLessThanThresh,
+                                  int liveGreaterThanThresh);
+
 }

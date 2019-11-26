@@ -60,6 +60,27 @@ public class JSpot extends JPanel implements MouseListener, Spot {
         addMouseListener(this);
     }
 
+    public int getNumberOfLiveNeighbors() {
+        int x = getSpotX();
+        int y = getSpotY();
+        int liveCount = 0;
+        for (int i=-1; i <= 1; i++) {
+            for (int j=-1; j <= 1; j++) {
+                if (!(i == 0 && j == 0)) {
+                    try {
+                        if (!getBoard().getSpotAt(x + i, y + j).isEmpty()) {
+                            liveCount++;
+                        }
+                    } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+                        // Assume all neighbors outside of range are dead
+                        liveCount++;
+                    }
+                }
+            }
+        }
+        return liveCount;
+    }
+
     // Getters for X, Y, and Board properties
 
     @Override

@@ -39,16 +39,76 @@ public class JSpotBoard extends JPanel implements SpotBoard {
         }
         setLayout(new GridLayout(height, width));
         _spots = new Spot[width][height];
+        initializeBoard(_spots);
 
-        Dimension preferred_size = new Dimension(DEFAULT_SCREEN_WIDTH/width, DEFAULT_SCREEN_HEIGHT/height);
+    }
 
-        for (int y=0; y<height; y++) {
-            for (int x=0; x<width; x++) {
-                _spots[x][y] = new JSpot(DEFAULT_BACKGROUND_LIGHT, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
-                ((JSpot)_spots[x][y]).setPreferredSize(preferred_size);
-                add(((JSpot) _spots[x][y]));
+    private void initializeBoard(Spot[][] spots) {
+        Dimension preferred_size = new Dimension(DEFAULT_SCREEN_WIDTH/getSpotWidth(), DEFAULT_SCREEN_HEIGHT/getSpotHeight());
+
+        for (int y=0; y<getSpotHeight(); y++) {
+            for (int x=0; x<getSpotHeight(); x++) {
+                spots[x][y] = new JSpot(DEFAULT_BACKGROUND_LIGHT, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
+                ((JSpot)spots[x][y]).setPreferredSize(preferred_size);
+                add(((JSpot) spots[x][y]));
             }
         }
+    }
+
+    public void setNextGeneration(int dieLessThanThresh,
+                                  int dieGreaterThanThresh,
+                                  int liveLessThanThresh,
+                                  int liveGreaterThanThresh) {
+        Spot[][] nextBoard = new Spot[getSpotWidth()][getSpotHeight()];
+        initializeBoard(nextBoard);
+        for (int i=0; i< getSpotWidth(); i++) {
+            for (int j=0; j < getSpotHeight(); j++) {
+                Spot s = getSpotAt(i, j);
+                int liveCount = s.getNumberOfLiveNeighbors();
+                if (s.isEmpty()) {
+                    if (liveCount < dieLessThanThresh && liveCount > dieGreaterThanThresh) {
+                        nextBoard[i][j].toggleSpot();
+                    }
+                } else if (liveCount > liveGreaterThanThresh && liveCount < liveLessThanThresh) {
+                    // nextBoard initialized as empty, so only toggle if live spot stays alive
+                    nextBoard[i][j].toggleSpot();
+                }
+            }
+        }
+        for (int i=0; i < getSpotWidth(); i++) {
+            for (int j=0; j < getSpotHeight(); j++) {
+                if (nextBoard[i][j].getSpotColor() != _spots[i][j].getSpotColor()) {
+                    nextBoard[i][j].toggleSpot();
+                }
+            }
+        }
+        _spots = nextBoard;
+        update();
+    }
+
+    public void update() {
+        trigger_update();
+    }
+
+    private void trigger_update() {
+        repaint();
+
+        // Not sure why, but need to schedule a call
+        // to repaint for a little bit into the future
+        // as well as the one we just did above
+        // in order to make sure that we don't end up
+        // with visual artifacts due to race conditions.
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                }
+                repaint();
+            }
+        }).start();
+
     }
 
     // Getters for SpotWidth and SpotHeight properties
