@@ -126,9 +126,8 @@ public class GameOfLifeModel {
         }
         for (int i=0; i < _board.getSpotWidth(); i++) {
             for (int j=0; j < _board.getSpotHeight(); j++) {
-                if (nextBoard.getSpotAt(i, j).getSpotColor() != _board.getSpotAt(i, j).getSpotColor()) {
+                if (nextBoard.getSpotAt(i, j).isEmpty() && !_board.getSpotAt(i, j).isEmpty()) {
                     _board.getSpotAt(i, j).toggleSpot();
-                    System.out.println("Spot toggled");
                 }
             }
         }
