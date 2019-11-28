@@ -40,13 +40,16 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         DimensionEvent dimension = (DimensionEvent) e;
         int width = dimension.getWidth();
         int height = dimension.getHeight();
-        _view.setBoard(new JSpotBoard(width, height));
-        _view.revalidate();
+
+        // TODO : Fix this code to properly update new board
+        JSpotBoard newBoard = new JSpotBoard(width, height);
+        _view.setBoard(newBoard);
+        _model.setBoard(newBoard);
         _view.repaint();
     }
 
     /*
-     * Change threshold values when
+     * Changes model threshold values
      */
     @Override
     public void handleThresholdEvent(GameOfLifeViewEvent e) {
@@ -100,7 +103,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     @Override
     public void update(GameOfLifeModel model, JSpotBoard board) {
         _view.setBoard(_model.getBoard());
-        _view.revalidate();
         _view.repaint();
     }
 }

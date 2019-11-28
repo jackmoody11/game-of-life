@@ -61,7 +61,7 @@ public class GameOfLifeModel {
 
     void setBoard(JSpotBoard board) {
         _board = board;
-        notifyObservers(board);
+        notifyObservers(getBoard());
     }
 
     JSpotBoard getBoard() {
@@ -86,33 +86,33 @@ public class GameOfLifeModel {
      * Clear all spots on board
      */
     void reset() {
-        SpotBoardIterator iterator = new SpotBoardIterator(_board);
+        SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
         while (iterator.hasNext()) {
             Spot s = iterator.next();
             s.clearSpot();
         }
-        notifyObservers(_board);
+        notifyObservers(getBoard());
     }
 
     void randomlyFill() {
-        SpotBoardIterator iterator = new SpotBoardIterator(_board);
+        SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
         while (iterator.hasNext()) {
             Spot s = iterator.next();
             if (Math.random() >= 0.7) {
                 s.toggleSpot();
             }
         }
-        notifyObservers(_board);
+        notifyObservers(getBoard());
     }
 
     void setNextGeneration(int dieLessThanThresh,
                                   int dieGreaterThanThresh,
                                   int liveLessThanThresh,
                                   int liveGreaterThanThresh) {
-        JSpotBoard nextBoard = new JSpotBoard(_board.getSpotWidth(), _board.getSpotHeight());
-        for (int i=0; i< _board.getSpotWidth(); i++) {
-            for (int j=0; j < _board.getSpotHeight(); j++) {
-                Spot s = _board.getSpotAt(i, j);
+        JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
+        for (int i=0; i< getBoard().getSpotWidth(); i++) {
+            for (int j=0; j < getBoard().getSpotHeight(); j++) {
+                Spot s = getBoard().getSpotAt(i, j);
                 int liveCount = s.getNumberOfLiveNeighbors();
                 if (s.isEmpty()) {
                     if (liveCount < dieLessThanThresh && liveCount > dieGreaterThanThresh) {
@@ -124,13 +124,13 @@ public class GameOfLifeModel {
                 }
             }
         }
-        for (int i=0; i < _board.getSpotWidth(); i++) {
-            for (int j=0; j < _board.getSpotHeight(); j++) {
-                if (nextBoard.getSpotAt(i, j).isEmpty() && !_board.getSpotAt(i, j).isEmpty()) {
-                    _board.getSpotAt(i, j).toggleSpot();
+        for (int i=0; i < getBoard().getSpotWidth(); i++) {
+            for (int j=0; j < getBoard().getSpotHeight(); j++) {
+                if (nextBoard.getSpotAt(i, j).isEmpty() && !getBoard().getSpotAt(i, j).isEmpty()) {
+                    getBoard().getSpotAt(i, j).toggleSpot();
                 }
             }
         }
-        notifyObservers(_board);
+        notifyObservers(getBoard());
     }
 }
