@@ -174,23 +174,6 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         }
     }
 
-    int getDieGreaterThanThresh() {
-        return (Integer) _dieGreaterThanThresh.getValue();
-    }
-
-    int getDieLessThanThresh() {
-        return (Integer) _dieLessThanThresh.getValue();
-    }
-
-    int getLiveGreaterThanThresh() {
-        return (Integer) _liveGreaterThanThresh.getValue();
-    }
-
-    int getLiveLessThanThresh() {
-        return (Integer) _liveLessThanThresh.getValue();
-    }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton button = (JButton) e.getSource();
@@ -223,7 +206,6 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
     @Override
     public void stateChanged(ChangeEvent e) {
         JSpinner source = (JSpinner) e.getSource();
-        System.out.println(source);
         int value = (Integer) source.getValue();
         if (_heightSpinner.equals(source)) {
             int height = (Integer) _heightSpinner.getValue();

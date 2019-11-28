@@ -73,7 +73,6 @@ public class JSpot extends JPanel implements MouseListener, Spot {
                         }
                     } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
                         // Assume all neighbors outside of range are dead
-                        liveCount++;
                     }
                 }
             }
