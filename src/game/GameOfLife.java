@@ -7,7 +7,7 @@ public class GameOfLife {
     public static void main(String[] args) {
 
         GameOfLifeModel model = new GameOfLifeModel();
-        GameOfLifeView view = new GameOfLifeView(10, 10);
+        GameOfLifeView view = new GameOfLifeView(model);
         GameOfLifeController controller = new GameOfLifeController(model, view);
 
         JFrame mainFrame = new JFrame();

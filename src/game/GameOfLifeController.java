@@ -1,9 +1,5 @@
 package game;
 
-import org.w3c.dom.events.EventException;
-
-import java.awt.event.ActionEvent;
-
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
 
     private GameOfLifeModel _model;
@@ -12,6 +8,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     GameOfLifeController(GameOfLifeModel model, GameOfLifeView view) {
         _model = model;
         _view = view;
+        _model.setBoard(view.getBoard());
 
         view.addGameOfLifeViewListener(this);
         model.addObserver(this);
@@ -45,21 +42,24 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int board_height = _view.getBoard().getSpotHeight();
         int width = dimension.getWidth();
         int height = dimension.getHeight();
-        if (width >= 10 && width <= 500) {
-            board_width = width;
-        }
-        if (height >= 10 && height <= 500) {
-            board_height = height;
-        }
-        System.out.println("Width: " + width + " Height: " + height);
         _view.setBoard(new JSpotBoard(width, height));
+        _view.revalidate();
         _view.repaint();
-        System.out.println("New Width: " + _view.getBoard().getSpotWidth() + " New Height: " + _view.getBoard().getSpotHeight());
-        System.out.println("Dimensions changed.");
     }
 
     @Override
     public void handleThresholdEvent(GameOfLifeViewEvent e) {
+        ThresholdEvent threshEvent = (ThresholdEvent) e;
+        int value = threshEvent.getValue();
+        if (threshEvent.isDie() && threshEvent.isLessThan()) {
+            _model.setDieLessThanThresh(value);
+        } else if (threshEvent.isDie()) {
+            _model.setDieGreaterThanThresh(value);
+        } else if (threshEvent.isLessThan()) {
+            _model.setLiveLessThanThresh(value);
+        } else {
+            _model.setLiveGreaterThanThresh(value);
+        }
 
     }
 
@@ -76,7 +76,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
     @Override
     public void handleSimulationSpeedEvent(GameOfLifeViewEvent e) {
-
+        _model.setSimulationSpeed(((SimulationSpeedEvent) e).getSpeed());
     }
 
     @Override
@@ -86,25 +86,17 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
     @Override
     public void handleNextIterationEvent(GameOfLifeViewEvent e) {
-
-            _view.getBoard().setNextGeneration(_view.getDieLessThanThresh(), _view.getDieGreaterThanThresh(),
-                                               _view.getLiveLessThanThresh(), _view.getLiveGreaterThanThresh());
-            int liveCount = 0;
-            for (Spot s : _view.getBoard()) {
-                if (!s.isEmpty()) {
-                    liveCount++;
-                }
-            }
-            System.out.println("Live spots: " + liveCount);
+        _model.setNextGeneration(_view.getDieLessThanThresh(),
+                                 _view.getDieGreaterThanThresh(),
+                                 _view.getLiveLessThanThresh(),
+                                 _view.getLiveGreaterThanThresh());
+        _view.getBoard().update();
     }
 
     @Override
     public void handleRestartEvent(GameOfLifeViewEvent e) {
-        SpotBoardIterator iterator = new SpotBoardIterator(_view.getBoard());
-        while (iterator.hasNext()) {
-            Spot s = iterator.next();
-            s.clearSpot();
-        }
+        _model.reset();
+        _view.setBoard(_model.getBoard());
     }
 
 

@@ -1,14 +1,11 @@
 package game;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -46,10 +43,10 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
 
 
 
-    GameOfLifeView(int width, int height) {
+    GameOfLifeView(GameOfLifeModel model) {
         setLayout(new BorderLayout());
 
-        _board = new JSpotBoard(width, height);
+        _board = new JSpotBoard(10,10);
         _board.addSpotListener(this);
         add(_board, BorderLayout.NORTH);
 
@@ -61,11 +58,10 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         _simpleSettingsPanel.setLayout(new GridLayout());
 
         // Add width and height text fields
-        SpinnerModel dimensionModel = new SpinnerNumberModel(10, 10, 500, 1);
         JLabel heightTextLabel = new JLabel("Height: ");
-        _heightSpinner = new JSpinner(dimensionModel);
+        _heightSpinner = new JSpinner(new SpinnerNumberModel(10, 10, 500, 1));
         JLabel widthTextLabel = new JLabel("Width: ");
-        _widthSpinner = new JSpinner(dimensionModel);
+        _widthSpinner = new JSpinner(new SpinnerNumberModel(10, 10, 500, 1));
         _simpleSettingsPanel.add(heightTextLabel);
         _simpleSettingsPanel.add(_heightSpinner);
         _simpleSettingsPanel.add(widthTextLabel);
@@ -129,8 +125,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         _advancedSettingsPanel.add(_liveLessThanThresh);
 
         // Add simulation speed text field
-        SpinnerModel simulationModel = new SpinnerNumberModel(10, 10, 1000, 1);
-        _simulationSpeed = new JSpinner(simulationModel);
+        _simulationSpeed = new JSpinner(new SpinnerNumberModel(10, 10, 1000, 1));
         JLabel simulationSpeedLabel = new JLabel("Simulation Speed");
         _advancedSettingsPanel.add(simulationSpeedLabel);
         _advancedSettingsPanel.add(_simulationSpeed);
@@ -156,11 +151,11 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         this.grabFocus();
     }
 
-    SpotBoard getBoard() {
+    JSpotBoard getBoard() {
         return _board;
     }
 
-    public void setBoard(JSpotBoard board) {
+    void setBoard(JSpotBoard board) {
         _board = board;
     }
 
@@ -172,10 +167,27 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         listeners.remove(l);
     }
 
+    // Same thing as notifyObservers
     private void fireEvent(GameOfLifeViewEvent e) {
         for (GameOfLifeViewListener l : listeners) {
             l.handleGameOfLifeViewEvent(e);
         }
+    }
+
+    int getDieGreaterThanThresh() {
+        return (Integer) _dieGreaterThanThresh.getValue();
+    }
+
+    int getDieLessThanThresh() {
+        return (Integer) _dieLessThanThresh.getValue();
+    }
+
+    int getLiveGreaterThanThresh() {
+        return (Integer) _liveGreaterThanThresh.getValue();
+    }
+
+    int getLiveLessThanThresh() {
+        return (Integer) _liveLessThanThresh.getValue();
     }
 
 
@@ -191,35 +203,6 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         } else if (button == _simulationButton) {
             fireEvent(new SimulationEvent());
         }
-    }
-
-    // Credit : https://www.baeldung.com/java-check-string-number
-    private static boolean isNumeric(String string) {
-        if (string == null) {
-            return false;
-        }
-        try {
-            int i = Integer.parseInt(string);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    public int getDieGreaterThanThresh() {
-        return (Integer) _dieGreaterThanThresh.getValue();
-    }
-
-    public int getDieLessThanThresh() {
-        return (Integer) _dieLessThanThresh.getValue();
-    }
-
-    public int getLiveGreaterThanThresh() {
-        return (Integer) _liveGreaterThanThresh.getValue();
-    }
-
-    public int getLiveLessThanThresh() {
-        return (Integer) _liveLessThanThresh.getValue();
     }
 
     @Override
@@ -240,17 +223,16 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
     @Override
     public void stateChanged(ChangeEvent e) {
         JSpinner source = (JSpinner) e.getSource();
+        System.out.println(source);
         int value = (Integer) source.getValue();
         if (_heightSpinner.equals(source)) {
-            int height = (value >= 10 && value <= 500) ? value : 10;
+            int height = (Integer) _heightSpinner.getValue();
             int width = (Integer) _widthSpinner.getValue();
             fireEvent(new DimensionEvent(width, height));
-            System.out.println("Height changed");
         } else if (_widthSpinner.equals(source)) {
-            int width = (value >= 10 && value <= 500) ? value : 10;
+            int width = (Integer) _widthSpinner.getValue();
             int height = (Integer) _heightSpinner.getValue();
             fireEvent(new DimensionEvent(width, height));
-            System.out.println("Width changed");
         } else if (_dieGreaterThanThresh.equals(source)) {
             fireEvent(new ThresholdEvent(value, true, false));
         } else if (_dieLessThanThresh.equals(source)) {

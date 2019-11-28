@@ -35,6 +35,9 @@ class DimensionEvent extends GameOfLifeViewEvent {
     private int _width, _height;
 
     DimensionEvent(int width, int height) {
+        if (width < 10 || height < 10 || width > 500 || height > 500) {
+            throw new RuntimeException("Width and height must be between 10 and 500");
+        }
         _width = width;
         _height = height;
     }
@@ -47,6 +50,7 @@ class DimensionEvent extends GameOfLifeViewEvent {
         return _height;
     }
 
+    @Override
     public boolean isDimensionEvent() {
         return true;
     }
@@ -75,12 +79,14 @@ class ThresholdEvent extends GameOfLifeViewEvent {
         return _isLessThan;
     }
 
+    @Override
     public boolean isThresholdEvent() {
         return true;
     }
 }
 
 class RandomFillEvent extends GameOfLifeViewEvent {
+    @Override
     public boolean isRandomFillEvent() {
         return true;
     }
@@ -97,12 +103,14 @@ class SimulationSpeedEvent extends GameOfLifeViewEvent {
         return _speed;
     }
 
+    @Override
     public boolean isSimulationSpeedEvent() {
         return true;
     }
 
 }
 class SimulationEvent extends GameOfLifeViewEvent {
+    @Override
     public boolean isSimulationEvent() {
         return true;
     }
@@ -110,12 +118,14 @@ class SimulationEvent extends GameOfLifeViewEvent {
 }
 
 class NextIterationEvent extends GameOfLifeViewEvent {
+    @Override
     public boolean isNextIterationEvent() {
         return true;
     }
 }
 
 class RestartEvent extends GameOfLifeViewEvent {
+    @Override
     public boolean isRestartEvent() {
         return true;
     }
