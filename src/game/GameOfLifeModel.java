@@ -114,19 +114,20 @@ public class GameOfLifeModel {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
                 Spot s = getBoard().getSpotAt(i, j);
                 int liveCount = s.getNumberOfLiveNeighbors();
+                // When to set dead to alive
                 if (s.isEmpty()) {
                     if (liveCount < dieLessThanThresh && liveCount > dieGreaterThanThresh) {
                         nextBoard.getSpotAt(i, j).toggleSpot();
                     }
                 } else if (liveCount > liveGreaterThanThresh && liveCount < liveLessThanThresh) {
-                    // nextBoard initialized as empty, so only toggle if live spot stays alive
+                    // live spot dies if live count outside of threshold
                     nextBoard.getSpotAt(i, j).toggleSpot();
                 }
             }
         }
         for (int i=0; i < getBoard().getSpotWidth(); i++) {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
-                if (nextBoard.getSpotAt(i, j).isEmpty() && !getBoard().getSpotAt(i, j).isEmpty()) {
+                if (nextBoard.getSpotAt(i, j).isEmpty() != getBoard().getSpotAt(i, j).isEmpty()) {
                     getBoard().getSpotAt(i, j).toggleSpot();
                 }
             }
