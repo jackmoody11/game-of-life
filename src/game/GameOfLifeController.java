@@ -1,9 +1,12 @@
 package game;
 
+import java.awt.event.ActionEvent;
+
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
 
     private GameOfLifeModel _model;
     private GameOfLifeView _view;
+    private Simulation _simulation;
 
     GameOfLifeController(GameOfLifeModel model, GameOfLifeView view) {
         _model = model;
@@ -25,7 +28,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         } else if (e.isRestartEvent()) {
             handleRestartEvent(e);
         } else if (e.isSimulationEvent()) {
-            handleRestartEvent(e);
+            handleSimulationEvent(e);
         } else if (e.isSimulationSpeedEvent()) {
             handleSimulationSpeedEvent(e);
         } else if (e.isThresholdEvent()) {
@@ -83,7 +86,21 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
     @Override
     public void handleSimulationEvent(GameOfLifeViewEvent e) {
-
+        String cmd = ((SimulationEvent) e).getSimulationCommand();
+        if (cmd.equals("start")) {
+            _simulation = new Simulation(_model);
+            _simulation.start();
+            _view.getSimulationButton().setText("Stop Simulation");
+            _view.getSimulationButton().setActionCommand("stop");
+        } else if (cmd.equals("stop")) {
+            _simulation.halt();
+            try {
+                _simulation.join();
+            } catch (InterruptedException ignored) {
+            }
+            _view.getSimulationButton().setText("Start Simulation");
+            _view.getSimulationButton().setActionCommand("start");
+        }
     }
 
     @Override

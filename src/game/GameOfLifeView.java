@@ -141,6 +141,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
 
         // Add simulation button
         _simulationButton = new JButton("Run Simulation");
+        _simulationButton.setActionCommand("start");
         _advancedSettingsPanel.add(_simulationButton);
 
         add(_advancedSettingsPanel, BorderLayout.SOUTH);
@@ -166,6 +167,10 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
 
     void setBoard(JSpotBoard board) {
         _board = board;
+    }
+
+    JButton getSimulationButton() {
+        return _simulationButton;
     }
 
     void addGameOfLifeViewListener(GameOfLifeViewListener l) {
@@ -194,7 +199,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
             } else if (button == _restartButton) {
                 fireEvent(new RestartEvent());
             } else if (button == _simulationButton) {
-                fireEvent(new SimulationEvent());
+                fireEvent(new SimulationEvent(e.getActionCommand()));
             }
         } else if (e.getSource() instanceof JToggleButton) {
             fireEvent(new TorusToggleEvent(((JToggleButton) e.getSource()).isSelected()));

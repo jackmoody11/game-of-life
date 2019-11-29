@@ -114,11 +114,24 @@ class SimulationSpeedEvent extends GameOfLifeViewEvent {
 
 }
 class SimulationEvent extends GameOfLifeViewEvent {
+    private String _simulationCommand;
+
+    SimulationEvent(String cmd) {
+        _simulationCommand = cmd;
+    }
+
     @Override
     public boolean isSimulationEvent() {
         return true;
     }
 
+    void setSimulationCommand(String cmd) {
+        _simulationCommand = cmd;
+    }
+
+    String getSimulationCommand() {
+        return _simulationCommand;
+    }
 }
 
 class NextIterationEvent extends GameOfLifeViewEvent {

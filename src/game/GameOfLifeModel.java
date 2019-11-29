@@ -21,7 +21,7 @@ public class GameOfLifeModel {
         _dieLessThanThresh = 4;
         _liveGreaterThanThresh = 1;
         _liveLessThanThresh = 4;
-        _simulationSpeed = 100;
+        _simulationSpeed = 10;
         _isTorusMode = false;
     }
 
@@ -47,6 +47,10 @@ public class GameOfLifeModel {
 
     void setIsTorusMode(boolean torusMode) {
         _isTorusMode = torusMode;
+    }
+
+    int getSimulationSpeed() {
+        return _simulationSpeed;
     }
 
     int getDieGreaterThanThresh() {
@@ -121,7 +125,7 @@ public class GameOfLifeModel {
 //        notifyObservers(getBoard());
     }
 
-    void setNextGeneration(int dieLessThanThresh,
+    synchronized void setNextGeneration(int dieLessThanThresh,
                            int dieGreaterThanThresh,
                            int liveLessThanThresh,
                            int liveGreaterThanThresh) {
