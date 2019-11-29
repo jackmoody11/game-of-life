@@ -29,6 +29,9 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
     // Add restart button
     private JButton _restartButton;
 
+    // Add torus toggle
+    private JToggleButton _torusToggle;
+
     // Threshold text fields
     private JSpinner _dieGreaterThanThresh;
     private JSpinner _dieLessThanThresh;
@@ -83,6 +86,10 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         _restartButton.setText("Restart");
         _simpleSettingsPanel.add(_restartButton);
 
+        // Add torus toggle button
+        _torusToggle = new JToggleButton("Torus Mode", false);
+        _simpleSettingsPanel.add(_torusToggle);
+
         // Add listeners to simple settings panel
         add(_simpleSettingsPanel, BorderLayout.CENTER);
         for (Component c : _simpleSettingsPanel.getComponents()) {
@@ -90,6 +97,8 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
                 ((JButton) c).addActionListener(this);
             } else if (c instanceof JSpinner) {
                 ((JSpinner) c).addChangeListener(this);
+            } else if (c instanceof JToggleButton) {
+                ((JToggleButton) c).addActionListener(this);
             }
         }
 
@@ -176,15 +185,19 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        if (button == _randomFillButton) {
-            fireEvent(new RandomFillEvent());
-        } else if (button == _nextButton) {
-            fireEvent(new NextIterationEvent());
-        } else if (button == _restartButton) {
-            fireEvent(new RestartEvent());
-        } else if (button == _simulationButton) {
-            fireEvent(new SimulationEvent());
+        if (e.getSource() instanceof JButton) {
+            JButton button = (JButton) e.getSource();
+            if (button == _randomFillButton) {
+                fireEvent(new RandomFillEvent());
+            } else if (button == _nextButton) {
+                fireEvent(new NextIterationEvent());
+            } else if (button == _restartButton) {
+                fireEvent(new RestartEvent());
+            } else if (button == _simulationButton) {
+                fireEvent(new SimulationEvent());
+            }
+        } else if (e.getSource() instanceof JToggleButton) {
+            fireEvent(new TorusToggleEvent(((JToggleButton) e.getSource()).isSelected()));
         }
     }
 

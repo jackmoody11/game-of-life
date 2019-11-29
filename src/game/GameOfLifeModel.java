@@ -11,6 +11,7 @@ public class GameOfLifeModel {
     private int _dieLessThanThresh;
     private int _liveGreaterThanThresh;
     private int _liveLessThanThresh;
+    private boolean _isTorusMode;
 
     GameOfLifeModel() {
         _observers = new ArrayList<>();
@@ -21,6 +22,7 @@ public class GameOfLifeModel {
         _liveGreaterThanThresh = 1;
         _liveLessThanThresh = 4;
         _simulationSpeed = 100;
+        _isTorusMode = false;
     }
 
     void setSimulationSpeed(int simulationSpeed) {
@@ -43,6 +45,10 @@ public class GameOfLifeModel {
         _liveLessThanThresh = liveLessThanThresh;
     }
 
+    void setIsTorusMode(boolean torusMode) {
+        _isTorusMode = torusMode;
+    }
+
     int getDieGreaterThanThresh() {
         return _dieGreaterThanThresh;
     }
@@ -57,6 +63,10 @@ public class GameOfLifeModel {
 
     int getLiveLessThanThresh() {
         return _liveLessThanThresh;
+    }
+
+    boolean isTorusMode() {
+        return _isTorusMode;
     }
 
     void setBoard(JSpotBoard board) {
@@ -105,15 +115,28 @@ public class GameOfLifeModel {
         notifyObservers(getBoard());
     }
 
+    void resizeBoard(int width, int height) {
+        _board.resizeBoard(width, height);
+        reset();
+//        notifyObservers(getBoard());
+    }
+
     void setNextGeneration(int dieLessThanThresh,
-                                  int dieGreaterThanThresh,
-                                  int liveLessThanThresh,
-                                  int liveGreaterThanThresh) {
+                           int dieGreaterThanThresh,
+                           int liveLessThanThresh,
+                           int liveGreaterThanThresh) {
         JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
         for (int i=0; i< getBoard().getSpotWidth(); i++) {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
                 Spot s = getBoard().getSpotAt(i, j);
-                int liveCount = s.getNumberOfLiveNeighbors();
+                int liveCount;
+                // TODO : Add torus mode
+                if (_isTorusMode) {
+                    liveCount = 0;
+                } else {
+                    liveCount = s.getNumberOfLiveNeighbors();
+                }
+
                 // When to set dead to alive
                 if (s.isEmpty()) {
                     if (liveCount < dieLessThanThresh && liveCount > dieGreaterThanThresh) {

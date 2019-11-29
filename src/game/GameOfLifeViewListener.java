@@ -10,5 +10,6 @@ public interface GameOfLifeViewListener {
     void handleSimulationEvent(GameOfLifeViewEvent e);
     void handleNextIterationEvent(GameOfLifeViewEvent e);
     void handleRestartEvent(GameOfLifeViewEvent e);
+    void handleTorusToggleEvent(GameOfLifeViewEvent e);
 
 }

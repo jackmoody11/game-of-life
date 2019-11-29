@@ -29,6 +29,10 @@ public abstract class GameOfLifeViewEvent {
     public boolean isRestartEvent() {
         return false;
     }
+
+    public boolean isTorusToggleEvent() {
+        return false;
+    }
 }
 
 class DimensionEvent extends GameOfLifeViewEvent {
@@ -127,6 +131,22 @@ class NextIterationEvent extends GameOfLifeViewEvent {
 class RestartEvent extends GameOfLifeViewEvent {
     @Override
     public boolean isRestartEvent() {
+        return true;
+    }
+}
+
+class TorusToggleEvent extends GameOfLifeViewEvent {
+    private boolean _selected;
+    TorusToggleEvent(boolean selected) {
+        _selected = selected;
+    }
+
+    public boolean isSelected() {
+        return _selected;
+    }
+
+    @Override
+    public boolean isTorusToggleEvent() {
         return true;
     }
 }

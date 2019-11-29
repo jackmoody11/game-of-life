@@ -30,7 +30,10 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
             handleSimulationSpeedEvent(e);
         } else if (e.isThresholdEvent()) {
             handleThresholdEvent(e);
-        } else {
+        } else if (e.isTorusToggleEvent()) {
+            handleTorusToggleEvent(e);
+        }
+        else {
             throw new RuntimeException("Event not recognized.");
         }
     }
@@ -42,10 +45,8 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int height = dimension.getHeight();
 
         // TODO : Fix this code to properly update new board
-        JSpotBoard newBoard = new JSpotBoard(width, height);
-        _view.setBoard(newBoard);
-        _model.setBoard(newBoard);
-        _view.repaint();
+        _model.resizeBoard(width, height);
+        System.out.println("Board resized: Width=" + width + " Height=" + height + " View Height=" + _view.getBoard().getSpotHeight());
     }
 
     /*
@@ -96,7 +97,14 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     @Override
     public void handleRestartEvent(GameOfLifeViewEvent e) {
         _model.reset();
-        _view.setBoard(_model.getBoard());
+//        _view.setBoard(_model.getBoard());
+    }
+
+    @Override
+    public void handleTorusToggleEvent(GameOfLifeViewEvent e) {
+        TorusToggleEvent event = (TorusToggleEvent) e;
+        _model.setIsTorusMode(event.isSelected());
+        System.out.println("Torus mode activated");
     }
 
 
