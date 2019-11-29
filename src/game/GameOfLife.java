@@ -11,7 +11,7 @@ public class GameOfLife {
         GameOfLifeController controller = new GameOfLifeController(model, view);
 
         JFrame mainFrame = new JFrame();
-        mainFrame.setTitle("Welcome to the Game of Life");
+        mainFrame.setTitle("Conway's Game of Life");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         mainFrame.setContentPane(view);
