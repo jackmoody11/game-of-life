@@ -49,7 +49,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
         // TODO : Fix this code to properly update new board
         _model.resizeBoard(width, height);
-        System.out.println("Board resized: Width=" + width + " Height=" + height + " View Height=" + _view.getBoard().getSpotHeight());
     }
 
     /*
@@ -121,7 +120,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     public void handleTorusToggleEvent(GameOfLifeViewEvent e) {
         TorusToggleEvent event = (TorusToggleEvent) e;
         _model.setIsTorusMode(event.isSelected());
-        System.out.println("Torus mode activated");
     }
 
 

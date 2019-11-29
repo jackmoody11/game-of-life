@@ -60,12 +60,13 @@ public class JSpot extends JPanel implements MouseListener, Spot {
         addMouseListener(this);
     }
 
+    // TODO : Add torus mode
     public int getNumberOfLiveNeighbors() {
         int x = getSpotX();
         int y = getSpotY();
         int liveCount = 0;
-        for (int i=-1; i <= 1; i++) {
-            for (int j=-1; j <= 1; j++) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
                 if (!(i == 0 && j == 0)) {
                     try {
                         if (!getBoard().getSpotAt(x + i, y + j).isEmpty()) {
@@ -77,6 +78,41 @@ public class JSpot extends JPanel implements MouseListener, Spot {
                 }
             }
         }
+        return liveCount;
+    }
+
+    /**
+     * Count number of live neighbors spot has if on torus
+     *
+     * @return
+     */
+    public int getNumberOfLiveNeighborsTorus() {
+        int x = getSpotX();
+        int y = getSpotY();
+        int liveCount = 0;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (!(i == 0 && j == 0)) {
+                    int currSpotX = x + i;
+                    int currSpotY = y + j;
+                    if (currSpotX < 0) {
+                        currSpotX = getBoard().getSpotWidth() - 1;
+                    } else if (currSpotX > getBoard().getSpotWidth() - 1) {
+                        currSpotX = 0;
+                    }
+                    if (currSpotY < 0) {
+                        currSpotY = getBoard().getSpotHeight() - 1;
+                    } else if (currSpotY > getBoard().getSpotHeight() - 1) {
+                        currSpotY = 0;
+                    }
+                    if (!getBoard().getSpotAt(currSpotX, currSpotY).isEmpty()) {
+                        liveCount++;
+                    }
+
+                }
+            }
+        }
+        System.out.println(liveCount);
         return liveCount;
     }
 

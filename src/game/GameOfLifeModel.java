@@ -136,7 +136,7 @@ public class GameOfLifeModel {
                 int liveCount;
                 // TODO : Add torus mode
                 if (_isTorusMode) {
-                    liveCount = 0;
+                    liveCount = s.getNumberOfLiveNeighborsTorus();
                 } else {
                     liveCount = s.getNumberOfLiveNeighbors();
                 }

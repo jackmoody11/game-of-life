@@ -68,7 +68,10 @@ public interface Spot {
     Color getSpotColor();
     void setHighlight(Color c);
     Color getHighlight();
-    public int getNumberOfLiveNeighbors();
+
+    int getNumberOfLiveNeighbors();
+
+    int getNumberOfLiveNeighborsTorus();
 
     void addSpotListener(SpotListener l);
     void removeSpotListener(SpotListener l);
