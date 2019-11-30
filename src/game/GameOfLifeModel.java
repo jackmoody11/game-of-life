@@ -82,8 +82,7 @@ public class GameOfLifeModel {
     void reset() {
         SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
         while (iterator.hasNext()) {
-            Spot s = iterator.next();
-            s.clearSpot();
+            iterator.next().clearSpot();
         }
         notifyObservers(getBoard());
     }
@@ -99,22 +98,16 @@ public class GameOfLifeModel {
         notifyObservers(getBoard());
     }
 
-    void resizeBoard(int width, int height) {
-        getBoard().resizeBoard(width, height);
-    }
-
     synchronized void setNextGeneration() {
 
         JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
+
+        // Find which spots to change in current board
         for (int i=0; i< getBoard().getSpotWidth(); i++) {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
                 Spot s = getBoard().getSpotAt(i, j);
                 int liveCount;
-                if (_isTorusMode) {
-                    liveCount = s.getNumberOfLiveNeighborsTorus();
-                } else {
-                    liveCount = s.getNumberOfLiveNeighbors();
-                }
+                liveCount = s.getNumberOfLiveNeighbors(_isTorusMode);
 
                 // Handle cases when spot is toggled
                 if (s.isEmpty()) {

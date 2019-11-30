@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.*;
+
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
 
     private GameOfLifeModel _model;
@@ -33,8 +35,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
             handleThresholdEvent(e);
         } else if (e.isTorusToggleEvent()) {
             handleTorusToggleEvent(e);
-        }
-        else {
+        } else {
             throw new RuntimeException("Event not recognized.");
         }
     }
@@ -48,8 +49,13 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int width = dimension.getWidth();
         int height = dimension.getHeight();
 
-        // TODO : Fix this code to properly update new board
-        _model.resizeBoard(width, height);
+        _view.remove(_view.getBoard());
+        _view.getBoard().removeSpotListener(_view);
+        JSpotBoard board = new JSpotBoard(width, height);
+        _model.setBoard(board);
+        board.addSpotListener(_view);
+        _view.add(board, BorderLayout.NORTH);
+        _view.revalidate();
     }
 
     /*

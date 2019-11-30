@@ -149,6 +149,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
 
     void setBoard(JSpotBoard board) {
         this.getLayout().removeLayoutComponent(_board);
+        _board.removeSpotListener(this);
         _board = board;
         _board.addSpotListener(this);
         add(_board, BorderLayout.NORTH);
