@@ -4,9 +4,7 @@ package game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -27,40 +25,31 @@ public class JSpotBoard extends JPanel implements SpotBoard {
     private static final int DEFAULT_SCREEN_WIDTH = 500;
     private static final int DEFAULT_SCREEN_HEIGHT = 500;
     private static final Color DEFAULT_BACKGROUND_LIGHT = new Color(0.8f, 0.8f, 0.8f);
-    private static final Color DEFAULT_BACKGROUND_DARK = new Color(0.5f, 0.5f, 0.5f);
     private static final Color DEFAULT_SPOT_COLOR = Color.BLACK;
-    private static final Color DEFAULT_HIGHLIGHT_COLOR = Color.YELLOW;
+    private static final Color DEFAULT_HIGHLIGHT_COLOR = Color.GREEN;
 
     private Spot[][] _spots;
 
-    public JSpotBoard(int width, int height) {
+    JSpotBoard(int width, int height) {
         if (width < 1 || height < 1 || width > 500 || height > 500) {
             throw new IllegalArgumentException("Illegal spot board geometry");
         }
         setLayout(new GridLayout(height, width));
         _spots = new Spot[width][height];
-        initializeBoard(_spots, width, height);
+        initializeBoard(width, height);
 
     }
 
-    private void initializeBoard(Spot[][] spots, int width, int height) {
+    private void initializeBoard(int width, int height) {
         Dimension preferred_size = new Dimension(DEFAULT_SCREEN_WIDTH/width, DEFAULT_SCREEN_HEIGHT/height);
-
         for (int y=0; y<height; y++) {
             for (int x=0; x<width; x++) {
-                spots[x][y] = new JSpot(DEFAULT_BACKGROUND_LIGHT, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
-                ((JSpot)spots[x][y]).setPreferredSize(preferred_size);
-                add(((JSpot) spots[x][y]));
+                _spots[x][y] = new JSpot(DEFAULT_BACKGROUND_LIGHT, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
+                ((JSpot) _spots[x][y]).setPreferredSize(preferred_size);
+                add(((JSpot) _spots[x][y]));
             }
         }
     }
-
-    void resizeBoard(int width, int height) {
-        setLayout(new GridLayout(height, width));
-        _spots = new Spot[width][height];
-        initializeBoard(_spots, width, height);
-    }
-
 
     private void trigger_update() {
         repaint();
@@ -71,14 +60,12 @@ public class JSpotBoard extends JPanel implements SpotBoard {
         // in order to make sure that we don't end up
         // with visual artifacts due to race conditions.
 
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                }
-                repaint();
+        new Thread(() -> {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
             }
+            repaint();
         }).start();
 
     }
