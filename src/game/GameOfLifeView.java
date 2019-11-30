@@ -95,9 +95,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         advancedSettingsPanel.setLayout(new GridLayout());
 
         // Add threshold text fields
-        // TODO: Will need to add some sort of model logic to only allow certain numbers
-        //       based on less than/greater than value -- Actually not sure if this is necessary
-        //       since user is explicitly stating that they want this to apply
+        // TODO: Possibly update models on threshold change
         SpinnerModel dieGreaterModel = new SpinnerNumberModel(2, -1, 9, 1);
         SpinnerModel dieLessModel = new SpinnerNumberModel(4, -1, 9, 1);
         SpinnerModel liveGreaterModel = new SpinnerNumberModel(1, -1, 9, 1);
