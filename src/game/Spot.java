@@ -69,9 +69,7 @@ public interface Spot {
     void setHighlight(Color c);
     Color getHighlight();
 
-    int getNumberOfLiveNeighbors();
-
-    int getNumberOfLiveNeighborsTorus();
+    int getNumberOfLiveNeighbors(boolean torusMode);
 
     void addSpotListener(SpotListener l);
     void removeSpotListener(SpotListener l);

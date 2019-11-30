@@ -2,9 +2,7 @@ package game;
 
 
 import java.awt.BasicStroke;
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -13,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.BorderFactory;
 
 /*
  * JSpot
@@ -41,8 +37,8 @@ public class JSpot extends JPanel implements MouseListener, Spot {
 
     private List<SpotListener> _spot_listeners;
 
-    public JSpot(Color background, Color spot_color, Color highlight,
-                 SpotBoard board, int x, int y) {
+    JSpot(Color background, Color spot_color, Color highlight,
+          SpotBoard board, int x, int y) {
 
         // Background color inherited from JPanel
         setBackground(background);
@@ -55,37 +51,19 @@ public class JSpot extends JPanel implements MouseListener, Spot {
         _x = x;
         _y = y;
 
-        _spot_listeners = new ArrayList<SpotListener>();
+        _spot_listeners = new ArrayList<>();
 
         addMouseListener(this);
     }
 
-    public int getNumberOfLiveNeighbors() {
-        int x = getSpotX();
-        int y = getSpotY();
-        int liveCount = 0;
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (!(i == 0 && j == 0)) {
-                    try {
-                        if (!getBoard().getSpotAt(x + i, y + j).isEmpty()) {
-                            liveCount++;
-                        }
-                    } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
-                        // Assume all neighbors outside of range are dead
-                    }
-                }
-            }
-        }
-        return liveCount;
-    }
-
     /**
-     * Count number of live neighbors spot has if on torus
+     * Counts number of live neighbors for any given spot on board.
      *
-     * @return
+     * @param torusMode Whether or not to use torus mode when calculating
+     *                  live neighbors.
+     * @return Number of live neighbors for given spot on board.
      */
-    public int getNumberOfLiveNeighborsTorus() {
+    public int getNumberOfLiveNeighbors(boolean torusMode) {
         int x = getSpotX();
         int y = getSpotY();
         int liveCount = 0;
@@ -94,20 +72,29 @@ public class JSpot extends JPanel implements MouseListener, Spot {
                 if (!(i == 0 && j == 0)) {
                     int currSpotX = x + i;
                     int currSpotY = y + j;
-                    if (currSpotX < 0) {
-                        currSpotX = getBoard().getSpotWidth() - 1;
-                    } else if (currSpotX > getBoard().getSpotWidth() - 1) {
-                        currSpotX = 0;
+                    try {
+                        if (!getBoard().getSpotAt(x + i, y + j).isEmpty()) {
+                            liveCount++;
+                        }
+                    } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+                        if (torusMode) {
+                            int width = getBoard().getSpotWidth();
+                            int height = getBoard().getSpotHeight();
+                            if (currSpotX < 0) {
+                                currSpotX = width - 1;
+                            } else if (currSpotX > width - 1) {
+                                currSpotX = 0;
+                            }
+                            if (currSpotY < 0) {
+                                currSpotY = height - 1;
+                            } else if (currSpotY > height - 1) {
+                                currSpotY = 0;
+                            }
+                            if (!getBoard().getSpotAt(currSpotX, currSpotY).isEmpty()) {
+                                liveCount++;
+                            }
+                        }
                     }
-                    if (currSpotY < 0) {
-                        currSpotY = getBoard().getSpotHeight() - 1;
-                    } else if (currSpotY > getBoard().getSpotHeight() - 1) {
-                        currSpotY = 0;
-                    }
-                    if (!getBoard().getSpotAt(currSpotX, currSpotY).isEmpty()) {
-                        liveCount++;
-                    }
-
                 }
             }
         }
@@ -115,7 +102,6 @@ public class JSpot extends JPanel implements MouseListener, Spot {
     }
 
     // Getters for X, Y, and Board properties
-
     @Override
     public int getSpotX() {
         return _x;
@@ -278,7 +264,7 @@ public class JSpot extends JPanel implements MouseListener, Spot {
             public void run() {
                 try {
                     Thread.sleep(50);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
                 repaint();
             }
