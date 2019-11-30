@@ -1,7 +1,6 @@
 package game;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class GameOfLife {
     public static void main(String[] args) {
