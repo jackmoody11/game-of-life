@@ -50,10 +50,8 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int height = dimension.getHeight();
 
         _view.remove(_view.getBoard());
-        _view.getBoard().removeSpotListener(_view);
         JSpotBoard board = new JSpotBoard(width, height);
         _model.setBoard(board);
-        board.addSpotListener(_view);
         _view.add(board, BorderLayout.NORTH);
         _view.revalidate();
     }
@@ -71,7 +69,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
             } else {
                 _model.setDieGreaterThanThresh(value);
             }
-
         } else {
             if (threshEvent.isLessThan()) {
                 _model.setLiveLessThanThresh(value);
