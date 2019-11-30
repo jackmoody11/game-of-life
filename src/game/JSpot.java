@@ -60,7 +60,6 @@ public class JSpot extends JPanel implements MouseListener, Spot {
         addMouseListener(this);
     }
 
-    // TODO : Add torus mode
     public int getNumberOfLiveNeighbors() {
         int x = getSpotX();
         int y = getSpotY();
@@ -244,13 +243,11 @@ public class JSpot extends JPanel implements MouseListener, Spot {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
 
     }
 
