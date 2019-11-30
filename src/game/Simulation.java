@@ -21,12 +21,7 @@ public class Simulation extends Thread {
                 Thread.sleep(_model.getSimulationSpeed());
             } catch (InterruptedException ignored) {
             }
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    _model.setNextGeneration();
-                }
-            });
+            SwingUtilities.invokeLater(() -> _model.setNextGeneration());
         }
     }
 }
