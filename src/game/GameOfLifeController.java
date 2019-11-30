@@ -1,7 +1,5 @@
 package game;
 
-import java.awt.event.ActionEvent;
-
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
 
     private GameOfLifeModel _model;
@@ -41,6 +39,9 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         }
     }
 
+    /*
+     * Changes dimensions of board
+     */
     @Override
     public void handleDimensionEvent(GameOfLifeViewEvent e) {
         DimensionEvent dimension = (DimensionEvent) e;
@@ -58,19 +59,20 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     public void handleThresholdEvent(GameOfLifeViewEvent e) {
         ThresholdEvent threshEvent = (ThresholdEvent) e;
         int value = threshEvent.getValue();
-        if (threshEvent.isDie() && threshEvent.isLessThan()) {
-            _model.setDieLessThanThresh(value);
-        } else if (threshEvent.isDie()) {
-            // die and greater than
-            _model.setDieGreaterThanThresh(value);
-        } else if (threshEvent.isLessThan()) {
-            // live and less than
-            _model.setLiveLessThanThresh(value);
-        } else {
-            // live and greater than
-            _model.setLiveGreaterThanThresh(value);
-        }
+        if (threshEvent.isDie()) {
+            if (threshEvent.isLessThan()) {
+                _model.setDieLessThanThresh(value);
+            } else {
+                _model.setDieGreaterThanThresh(value);
+            }
 
+        } else {
+            if (threshEvent.isLessThan()) {
+                _model.setLiveLessThanThresh(value);
+            } else {
+                _model.setLiveGreaterThanThresh(value);
+            }
+        }
     }
 
     @Override
@@ -104,16 +106,12 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
     @Override
     public void handleNextIterationEvent(GameOfLifeViewEvent e) {
-        _model.setNextGeneration(_model.getDieLessThanThresh(),
-                                 _model.getDieGreaterThanThresh(),
-                                 _model.getLiveLessThanThresh(),
-                                 _model.getLiveGreaterThanThresh());
+        _model.setNextGeneration();
     }
 
     @Override
     public void handleRestartEvent(GameOfLifeViewEvent e) {
         _model.reset();
-//        _view.setBoard(_model.getBoard());
     }
 
     @Override

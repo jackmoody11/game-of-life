@@ -55,6 +55,12 @@ public class JSpotBoard extends JPanel implements SpotBoard {
         }
     }
 
+    void resizeBoard(int width, int height) {
+        setLayout(new GridLayout(height, width));
+        _spots = new Spot[width][height];
+        initializeBoard(_spots, width, height);
+    }
+
 
     private void trigger_update() {
         repaint();

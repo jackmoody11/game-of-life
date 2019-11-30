@@ -11,7 +11,7 @@ public class Simulation extends Thread {
         _done = false;
     }
 
-    public void halt() {
+    void halt() {
         _done = true;
     }
 
@@ -24,10 +24,7 @@ public class Simulation extends Thread {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    _model.setNextGeneration(_model.getDieLessThanThresh(),
-                                             _model.getDieGreaterThanThresh(),
-                                             _model.getLiveLessThanThresh(),
-                                             _model.getLiveGreaterThanThresh());
+                    _model.setNextGeneration();
                 }
             });
         }

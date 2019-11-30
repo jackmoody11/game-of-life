@@ -53,26 +53,6 @@ public class GameOfLifeModel {
         return _simulationSpeed;
     }
 
-    int getDieGreaterThanThresh() {
-        return _dieGreaterThanThresh;
-    }
-
-    int getDieLessThanThresh() {
-        return _dieLessThanThresh;
-    }
-
-    int getLiveGreaterThanThresh() {
-        return _liveGreaterThanThresh;
-    }
-
-    int getLiveLessThanThresh() {
-        return _liveLessThanThresh;
-    }
-
-    boolean isTorusMode() {
-        return _isTorusMode;
-    }
-
     void setBoard(JSpotBoard board) {
         _board = board;
         notifyObservers(getBoard());
@@ -120,38 +100,34 @@ public class GameOfLifeModel {
     }
 
     void resizeBoard(int width, int height) {
-        _board.resizeBoard(width, height);
-        reset();
-//        notifyObservers(getBoard());
+        getBoard().resizeBoard(width, height);
     }
 
-    synchronized void setNextGeneration(int dieLessThanThresh,
-                           int dieGreaterThanThresh,
-                           int liveLessThanThresh,
-                           int liveGreaterThanThresh) {
+    synchronized void setNextGeneration() {
+
         JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
         for (int i=0; i< getBoard().getSpotWidth(); i++) {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
                 Spot s = getBoard().getSpotAt(i, j);
                 int liveCount;
-                // TODO : Add torus mode
                 if (_isTorusMode) {
                     liveCount = s.getNumberOfLiveNeighborsTorus();
                 } else {
                     liveCount = s.getNumberOfLiveNeighbors();
                 }
 
-                // When to set dead to alive
+                // Handle cases when spot is toggled
                 if (s.isEmpty()) {
-                    if (liveCount < dieLessThanThresh && liveCount > dieGreaterThanThresh) {
+                    if (liveCount < _dieLessThanThresh && liveCount > _dieGreaterThanThresh) {
                         nextBoard.getSpotAt(i, j).toggleSpot();
                     }
-                } else if (liveCount > liveGreaterThanThresh && liveCount < liveLessThanThresh) {
-                    // live spot dies if live count outside of threshold
+                } else if (liveCount > _liveGreaterThanThresh && liveCount < _liveLessThanThresh) {
                     nextBoard.getSpotAt(i, j).toggleSpot();
                 }
             }
         }
+
+        // Toggle spots on board to match nextBoard
         for (int i=0; i < getBoard().getSpotWidth(); i++) {
             for (int j=0; j < getBoard().getSpotHeight(); j++) {
                 if (nextBoard.getSpotAt(i, j).isEmpty() != getBoard().getSpotAt(i, j).isEmpty()) {
