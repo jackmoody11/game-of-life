@@ -112,7 +112,6 @@ public class JSpot extends JPanel implements MouseListener, Spot {
                 }
             }
         }
-        System.out.println(liveCount);
         return liveCount;
     }
 
