@@ -34,13 +34,13 @@ public class JSpotBoard extends JPanel implements SpotBoard {
         if (width < 1 || height < 1 || width > 500 || height > 500) {
             throw new IllegalArgumentException("Illegal spot board geometry");
         }
-        setLayout(new GridLayout(height, width));
-        _spots = new Spot[width][height];
         initializeBoard(width, height);
 
     }
 
     private void initializeBoard(int width, int height) {
+        setLayout(new GridLayout(height, width));
+        _spots = new Spot[width][height];
         Dimension preferred_size = new Dimension(DEFAULT_SCREEN_WIDTH/width, DEFAULT_SCREEN_HEIGHT/height);
         for (int y=0; y<height; y++) {
             for (int x=0; x<width; x++) {
@@ -124,5 +124,12 @@ public class JSpotBoard extends JPanel implements SpotBoard {
     @Override
     public Iterator<Spot> iterator() {
         return new SpotBoardIterator(this);
+    }
+
+    public void changeDimensions(int width, int height) {
+        removeAll();
+        revalidate();
+        repaint();
+        initializeBoard(width, height);
     }
 }
