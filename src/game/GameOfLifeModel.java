@@ -87,6 +87,9 @@ public class GameOfLifeModel {
         notifyObservers(getBoard());
     }
 
+    /*
+     * Randomly fill board
+     */
     void randomlyFill() {
         SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
         while (iterator.hasNext()) {
@@ -98,13 +101,16 @@ public class GameOfLifeModel {
         notifyObservers(getBoard());
     }
 
+    /*
+     * Calculate which cells change in next generation and change board to match
+     */
     synchronized void setNextGeneration() {
 
         JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
 
         // Find which spots to change in current board
-        for (int i=0; i< getBoard().getSpotWidth(); i++) {
-            for (int j=0; j < getBoard().getSpotHeight(); j++) {
+        for (int i = 0; i< getBoard().getSpotWidth(); i++) {
+            for (int j = 0; j < getBoard().getSpotHeight(); j++) {
                 Spot s = getBoard().getSpotAt(i, j);
                 int liveCount;
                 liveCount = s.getNumberOfLiveNeighbors(_isTorusMode);
