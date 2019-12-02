@@ -2,6 +2,7 @@ package game;
 
 import java.awt.*;
 
+
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
 
     private GameOfLifeModel _model;
@@ -49,10 +50,8 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int width = dimension.getWidth();
         int height = dimension.getHeight();
 
-        _view.remove(_view.getBoard());
-        JSpotBoard board = new JSpotBoard(width, height);
-        _model.setBoard(board);
-        _view.add(board, BorderLayout.NORTH);
+        _view.getBoard().changeDimensions(width, height);
+        _model.setBoard(_view.getBoard());
         _view.revalidate();
     }
 
