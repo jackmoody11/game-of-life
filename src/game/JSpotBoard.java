@@ -126,7 +126,7 @@ public class JSpotBoard extends JPanel implements SpotBoard {
         return new SpotBoardIterator(this);
     }
 
-    public void changeDimensions(int width, int height) {
+    void changeDimensions(int width, int height) {
         removeAll();
         revalidate();
         repaint();
