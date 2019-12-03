@@ -61,7 +61,7 @@ public class GameOfLifeModel {
         notifyObservers(getBoard());
     }
 
-    JBoard getBoard() {
+    private JBoard getBoard() {
         return _board;
     }
 
@@ -84,7 +84,7 @@ public class GameOfLifeModel {
      */
     public void reset() {
         getBoard().reset();
-        notifyObservers(getBoard());
+        _board.repaint();
     }
 
     /*
@@ -92,13 +92,13 @@ public class GameOfLifeModel {
      */
     public void randomlyFill() {
         getBoard().randomlyFill();
-        notifyObservers(getBoard());
+        _board.repaint();
     }
 
     /*
      * Calculate which cells change in next generation and change board to match
      */
-    public synchronized void setNextGeneration() {
+    public void setNextGeneration() {
 
         JBoard nextBoard = new JBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
 
@@ -126,6 +126,6 @@ public class GameOfLifeModel {
                 }
             }
         }
-        notifyObservers(getBoard());
+        _board.repaint();
     }
 }

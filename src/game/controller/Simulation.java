@@ -7,9 +7,11 @@ import javax.swing.SwingUtilities;
 public class Simulation extends Thread {
     private boolean _done;
     private GameOfLifeModel _model;
+    private int _simulationSpeed;
 
     Simulation(GameOfLifeModel model) {
         _model = model;
+        _simulationSpeed = _model.getSimulationSpeed();
         _done = false;
     }
 
@@ -20,10 +22,20 @@ public class Simulation extends Thread {
     public void run() {
         while (!_done) {
             try {
-                Thread.sleep(_model.getSimulationSpeed());
-            } catch (InterruptedException ignored) {
+                Thread.sleep(_simulationSpeed);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Unexpected interrupt", e);
             }
-            SwingUtilities.invokeLater(() -> _model.setNextGeneration());
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    // Adjust simulation speed to what the computer can handle
+                    final long start = System.currentTimeMillis();
+                    _model.setNextGeneration();
+                    final long end = System.currentTimeMillis();
+                    _simulationSpeed = (int) (end - start);
+                }
+            });
         }
     }
 }

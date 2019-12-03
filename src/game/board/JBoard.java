@@ -151,18 +151,25 @@ public class JBoard extends JPanel implements Board, MouseListener {
         super.paintComponent(g);
 
         Graphics2D g2d = (Graphics2D) g;
-        int widthDelta = getWidth() / getSpotWidth();
-        int heightDelta = getHeight() / getSpotHeight();
+        int boardWidth = getSpotWidth();
+        int boardHeight = getSpotHeight();
+        int widthDelta = getWidth() / boardWidth;
+        int heightDelta = getHeight() / boardHeight;
 
         int minDelta = Math.min(widthDelta, heightDelta);
         // Set border for each rectangle
         g2d.setColor(BORDER_COLOR);
         g2d.setStroke(new BasicStroke((float) 0.1));
-        for (int x = 0; x < getSpotWidth(); x++) {
-            for (int y = 0; y < getSpotHeight(); y++) {
-                g2d.drawRect(x * widthDelta, y * heightDelta, widthDelta, heightDelta);
+        if (minDelta > 1) {
+            for (int x = 0; x < boardWidth; x++) {
+                for (int y = 0; y < boardHeight; y++) {
+                    g2d.drawRect(x * widthDelta, y * heightDelta, widthDelta, heightDelta);
+                }
             }
+        } else {
+            g2d.drawRect(0, 0, widthDelta * boardWidth, heightDelta * boardHeight);
         }
+
 
 
         // Fill in each live spot
