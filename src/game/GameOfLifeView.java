@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class GameOfLifeView extends JPanel implements ActionListener, SpotListener, ChangeListener {
+public class GameOfLifeView extends JPanel implements ActionListener, ChangeListener, BoardListener {
 
-    private JSpotBoard _board;
+    private JBoard _board;
     private List<GameOfLifeViewListener> listeners;
 
     private JSpinner _heightSpinner;
@@ -36,8 +36,8 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
     GameOfLifeView(GameOfLifeModel model) {
         setLayout(new BorderLayout());
 
-        _board = new JSpotBoard(10,10);
-        _board.addSpotListener(this);
+        _board = new JBoard(10, 10);
+        _board.addBoardListener(this);
         add(_board, BorderLayout.NORTH);
 
 
@@ -141,15 +141,15 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         this.grabFocus();
     }
 
-    JSpotBoard getBoard() {
+    JBoard getBoard() {
         return _board;
     }
 
-    void setBoard(JSpotBoard board) {
+    void setBoard(JBoard board) {
         this.getLayout().removeLayoutComponent(_board);
-        _board.removeSpotListener(this);
+        _board.removeBoardListener(this);
         _board = board;
-        _board.addSpotListener(this);
+        _board.addBoardListener(this);
         add(_board, BorderLayout.NORTH);
     }
 
@@ -191,21 +191,6 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
     }
 
     @Override
-    public void spotClicked(Spot spot) {
-        spot.toggleSpot();
-    }
-
-    @Override
-    public void spotEntered(Spot spot) {
-        spot.highlightSpot();
-    }
-
-    @Override
-    public void spotExited(Spot spot) {
-        spot.unhighlightSpot();
-    }
-
-    @Override
     public void stateChanged(ChangeEvent e) {
         JSpinner source = (JSpinner) e.getSource();
         int value = (Integer) source.getValue();
@@ -224,5 +209,10 @@ public class GameOfLifeView extends JPanel implements ActionListener, SpotListen
         } else if (_simulationSpeed.equals(source)) {
             fireEvent(new SimulationSpeedEvent(value));
         }
+    }
+
+    @Override
+    public void boardClicked(Board board, int x, int y) {
+        board.toggleSpotAt(x, y);
     }
 }

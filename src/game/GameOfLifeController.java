@@ -124,7 +124,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
 
     @Override
-    public void update(GameOfLifeModel model, JSpotBoard board) {
+    public void update(GameOfLifeModel model, JBoard board) {
         _view.setBoard(_model.getBoard());
         _view.repaint();
     }

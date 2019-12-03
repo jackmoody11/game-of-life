@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameOfLifeModel {
-    private JSpotBoard _board;
+    private JBoard _board;
     private List<GameOfLifeObserver> _observers;
     private int _simulationSpeed;
     private int _dieGreaterThanThresh;
@@ -53,12 +53,12 @@ public class GameOfLifeModel {
         return _simulationSpeed;
     }
 
-    void setBoard(JSpotBoard board) {
+    void setBoard(JBoard board) {
         _board = board;
         notifyObservers(getBoard());
     }
 
-    JSpotBoard getBoard() {
+    JBoard getBoard() {
         return _board;
     }
 
@@ -70,7 +70,7 @@ public class GameOfLifeModel {
         _observers.remove(o);
     }
 
-    private void notifyObservers(JSpotBoard board) {
+    private void notifyObservers(JBoard board) {
         for (GameOfLifeObserver o : _observers) {
             o.update(this, board);
         }
@@ -80,10 +80,7 @@ public class GameOfLifeModel {
      * Clear all spots on board
      */
     void reset() {
-        SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
-        while (iterator.hasNext()) {
-            iterator.next().clearSpot();
-        }
+        getBoard().reset();
         notifyObservers(getBoard());
     }
 
@@ -91,13 +88,7 @@ public class GameOfLifeModel {
      * Randomly fill board
      */
     void randomlyFill() {
-        SpotBoardIterator iterator = new SpotBoardIterator(getBoard());
-        while (iterator.hasNext()) {
-            Spot s = iterator.next();
-            if (Math.random() >= 0.7) {
-                s.toggleSpot();
-            }
-        }
+        getBoard().randomlyFill();
         notifyObservers(getBoard());
     }
 
@@ -106,31 +97,31 @@ public class GameOfLifeModel {
      */
     synchronized void setNextGeneration() {
 
-        JSpotBoard nextBoard = new JSpotBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
+        JBoard nextBoard = new JBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
 
         // Find which spots to change in current board
-        for (int i = 0; i< getBoard().getSpotWidth(); i++) {
-            for (int j = 0; j < getBoard().getSpotHeight(); j++) {
-                Spot s = getBoard().getSpotAt(i, j);
+        for (int x = 0; x < getBoard().getSpotWidth(); x++) {
+            for (int y = 0; y < getBoard().getSpotHeight(); y++) {
+                boolean s = getBoard().getSpotAt(x, y);
                 int liveCount;
-                liveCount = s.getNumberOfLiveNeighbors(_isTorusMode);
-
+                liveCount = getBoard().getNumberOfLiveNeighbors(_isTorusMode, x, y);
+                System.out.println(liveCount);
                 // Handle cases when spot is toggled
-                if (s.isEmpty()) {
+                if (s) {
                     if (liveCount < _dieLessThanThresh && liveCount > _dieGreaterThanThresh) {
-                        nextBoard.getSpotAt(i, j).toggleSpot();
+                        nextBoard.toggleSpotAt(x, y);
                     }
                 } else if (liveCount > _liveGreaterThanThresh && liveCount < _liveLessThanThresh) {
-                    nextBoard.getSpotAt(i, j).toggleSpot();
+                    nextBoard.toggleSpotAt(x, y);
                 }
             }
         }
 
         // Toggle spots on board to match nextBoard
-        for (int i=0; i < getBoard().getSpotWidth(); i++) {
-            for (int j=0; j < getBoard().getSpotHeight(); j++) {
-                if (nextBoard.getSpotAt(i, j).isEmpty() != getBoard().getSpotAt(i, j).isEmpty()) {
-                    getBoard().getSpotAt(i, j).toggleSpot();
+        for (int x = 0; x < getBoard().getSpotWidth(); x++) {
+            for (int y = 0; y < getBoard().getSpotHeight(); y++) {
+                if (nextBoard.getSpotAt(x, y) != getBoard().getSpotAt(x, y)) {
+                    getBoard().toggleSpotAt(x, y);
                 }
             }
         }
