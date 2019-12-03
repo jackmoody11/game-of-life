@@ -98,7 +98,7 @@ public class GameOfLifeModel {
     /*
      * Calculate which cells change in next generation and change board to match
      */
-    public void setNextGeneration() {
+    synchronized public void setNextGeneration() {
 
         JBoard nextBoard = new JBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
 
