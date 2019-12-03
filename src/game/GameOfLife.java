@@ -1,5 +1,9 @@
 package game;
 
+import game.controller.GameOfLifeController;
+import game.model.GameOfLifeModel;
+import game.view.GameOfLifeView;
+
 import javax.swing.*;
 
 public class GameOfLife {

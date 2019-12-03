@@ -1,6 +1,7 @@
-package game;
+package game.controller;
 
-import java.awt.event.ActionEvent;
+import game.board.JBoard;
+import game.model.GameOfLifeModel;
 
 public interface GameOfLifeObserver {
 

@@ -1,4 +1,7 @@
-package game;
+package game.model;
+
+import game.controller.GameOfLifeObserver;
+import game.board.JBoard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +16,7 @@ public class GameOfLifeModel {
     private int _liveLessThanThresh;
     private boolean _isTorusMode;
 
-    GameOfLifeModel() {
+    public GameOfLifeModel() {
         _observers = new ArrayList<>();
 
         // Set default values for model
@@ -25,35 +28,35 @@ public class GameOfLifeModel {
         _isTorusMode = false;
     }
 
-    void setSimulationSpeed(int simulationSpeed) {
+    public void setSimulationSpeed(int simulationSpeed) {
         _simulationSpeed = simulationSpeed;
     }
 
-    void setDieGreaterThanThresh(int dieGreaterThanThresh) {
+    public void setDieGreaterThanThresh(int dieGreaterThanThresh) {
         _dieGreaterThanThresh = dieGreaterThanThresh;
     }
 
-    void setDieLessThanThresh(int dieLessThanThresh) {
+    public void setDieLessThanThresh(int dieLessThanThresh) {
         _dieLessThanThresh = dieLessThanThresh;
     }
 
-    void setLiveGreaterThanThresh(int liveGreaterThanThresh) {
+    public void setLiveGreaterThanThresh(int liveGreaterThanThresh) {
         _liveGreaterThanThresh = liveGreaterThanThresh;
     }
 
-    void setLiveLessThanThresh(int liveLessThanThresh) {
+    public void setLiveLessThanThresh(int liveLessThanThresh) {
         _liveLessThanThresh = liveLessThanThresh;
     }
 
-    void setIsTorusMode(boolean torusMode) {
+    public void setIsTorusMode(boolean torusMode) {
         _isTorusMode = torusMode;
     }
 
-    int getSimulationSpeed() {
+    public int getSimulationSpeed() {
         return _simulationSpeed;
     }
 
-    void setBoard(JBoard board) {
+    public void setBoard(JBoard board) {
         _board = board;
         notifyObservers(getBoard());
     }
@@ -62,7 +65,7 @@ public class GameOfLifeModel {
         return _board;
     }
 
-    void addObserver(GameOfLifeObserver o) {
+    public void addObserver(GameOfLifeObserver o) {
         _observers.add(o);
     }
 
@@ -79,7 +82,7 @@ public class GameOfLifeModel {
     /*
      * Clear all spots on board
      */
-    void reset() {
+    public void reset() {
         getBoard().reset();
         notifyObservers(getBoard());
     }
@@ -87,7 +90,7 @@ public class GameOfLifeModel {
     /*
      * Randomly fill board
      */
-    void randomlyFill() {
+    public void randomlyFill() {
         getBoard().randomlyFill();
         notifyObservers(getBoard());
     }
@@ -95,7 +98,7 @@ public class GameOfLifeModel {
     /*
      * Calculate which cells change in next generation and change board to match
      */
-    synchronized void setNextGeneration() {
+    public synchronized void setNextGeneration() {
 
         JBoard nextBoard = new JBoard(getBoard().getSpotWidth(), getBoard().getSpotHeight());
 

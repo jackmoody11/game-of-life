@@ -1,4 +1,6 @@
-package game;
+package game.controller;
+
+import game.model.GameOfLifeModel;
 
 import javax.swing.SwingUtilities;
 

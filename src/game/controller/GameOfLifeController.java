@@ -1,6 +1,8 @@
-package game;
+package game.controller;
 
-import java.awt.*;
+import game.board.JBoard;
+import game.model.GameOfLifeModel;
+import game.view.*;
 
 
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {
@@ -9,7 +11,7 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     private GameOfLifeView _view;
     private Simulation _simulation;
 
-    GameOfLifeController(GameOfLifeModel model, GameOfLifeView view) {
+    public GameOfLifeController(GameOfLifeModel model, GameOfLifeView view) {
         _model = model;
         _view = view;
         _model.setBoard(view.getBoard());

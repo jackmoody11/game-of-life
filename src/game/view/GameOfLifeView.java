@@ -1,4 +1,8 @@
-package game;
+package game.view;
+
+import game.board.Board;
+import game.board.JBoard;
+import game.model.GameOfLifeModel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -33,7 +37,7 @@ public class GameOfLifeView extends JPanel implements ActionListener, ChangeList
     private JButton _simulationButton;
 
 
-    GameOfLifeView(GameOfLifeModel model) {
+    public GameOfLifeView(GameOfLifeModel model) {
         setLayout(new BorderLayout());
 
         _board = new JBoard(10, 10);
@@ -141,11 +145,11 @@ public class GameOfLifeView extends JPanel implements ActionListener, ChangeList
         this.grabFocus();
     }
 
-    JBoard getBoard() {
+    public JBoard getBoard() {
         return _board;
     }
 
-    void setBoard(JBoard board) {
+    public void setBoard(JBoard board) {
         this.getLayout().removeLayoutComponent(_board);
         _board.removeBoardListener(this);
         _board = board;
@@ -153,11 +157,11 @@ public class GameOfLifeView extends JPanel implements ActionListener, ChangeList
         add(_board, BorderLayout.NORTH);
     }
 
-    JButton getSimulationButton() {
+    public JButton getSimulationButton() {
         return _simulationButton;
     }
 
-    void addGameOfLifeViewListener(GameOfLifeViewListener l) {
+    public void addGameOfLifeViewListener(GameOfLifeViewListener l) {
         listeners.add(l);
     }
 

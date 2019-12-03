@@ -1,4 +1,6 @@
-package game;
+package game.board;
+
+import game.view.BoardListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +21,7 @@ public class JBoard extends JPanel implements Board, MouseListener {
     private final static Color SPOT_COLOR = Color.BLACK;
 
 
-    JBoard(int width, int height) {
+    public JBoard(int width, int height) {
         _board = new boolean[height][width];
         _listeners = new ArrayList<>();
         addMouseListener(this);
