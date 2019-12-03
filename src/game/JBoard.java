@@ -14,8 +14,8 @@ public class JBoard extends JPanel implements Board, MouseListener {
 
     private final static int DEFAULT_SCREEN_HEIGHT = 500;
     private final static int DEFAULT_SCREEN_WIDTH = 500;
-    private final static Color BACKGROUND_COLOR = Color.WHITE;
-    private final static Color BORDER_COLOR = Color.LIGHT_GRAY;
+    private final static Color BACKGROUND_COLOR = new Color(176, 190, 197); // light blue-gray
+    private final static Color BORDER_COLOR = new Color(117, 117, 117); // medium gray
     private final static Color SPOT_COLOR = Color.BLACK;
 
 
@@ -119,8 +119,10 @@ public class JBoard extends JPanel implements Board, MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX() * getSpotWidth() / getWidth();
-        int y = e.getY() * getSpotHeight() / getHeight();
+        int widthDelta = getWidth() / getSpotWidth();
+        int heightDelta = getHeight() / getSpotHeight();
+        int x = e.getX() / widthDelta;
+        int y = e.getY() / heightDelta;
         for (BoardListener l : _listeners) {
             l.boardClicked(this, x, y);
         }
@@ -150,16 +152,16 @@ public class JBoard extends JPanel implements Board, MouseListener {
         int widthDelta = getWidth() / getSpotWidth();
         int heightDelta = getHeight() / getSpotHeight();
 
-        // Clear board
-
-
+        int minDelta = Math.min(widthDelta, heightDelta);
         // Set border for each rectangle
         g2d.setColor(BORDER_COLOR);
+        g2d.setStroke(new BasicStroke((float) 0.1));
         for (int x = 0; x < getSpotWidth(); x++) {
             for (int y = 0; y < getSpotHeight(); y++) {
                 g2d.drawRect(x * widthDelta, y * heightDelta, widthDelta, heightDelta);
             }
         }
+
 
         // Fill in each live spot
         g2d.setColor(SPOT_COLOR);

@@ -90,18 +90,9 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     public void handleSimulationEvent(GameOfLifeViewEvent e) {
         String cmd = ((SimulationEvent) e).getSimulationCommand();
         if (cmd.equals("start")) {
-            _simulation = new Simulation(_model);
-            _simulation.start();
-            _view.getSimulationButton().setText("Stop Simulation");
-            _view.getSimulationButton().setActionCommand("stop");
+            startSimulation();
         } else if (cmd.equals("stop")) {
-            _simulation.halt();
-            try {
-                _simulation.join();
-            } catch (InterruptedException ignored) {
-            }
-            _view.getSimulationButton().setText("Start Simulation");
-            _view.getSimulationButton().setActionCommand("start");
+            stopSimulation();
         }
     }
 
@@ -113,6 +104,9 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     @Override
     public void handleRestartEvent(GameOfLifeViewEvent e) {
         _model.reset();
+        if (_view.getSimulationButton().getActionCommand().equals("stop")) {
+            stopSimulation();
+        }
     }
 
     @Override
@@ -125,5 +119,22 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
     @Override
     public void update(GameOfLifeModel model, JBoard board) {
         _view.repaint();
+    }
+
+    private void startSimulation() {
+        _simulation = new Simulation(_model);
+        _simulation.start();
+        _view.getSimulationButton().setText("Stop Simulation");
+        _view.getSimulationButton().setActionCommand("stop");
+    }
+
+    private void stopSimulation() {
+        _simulation.halt();
+        try {
+            _simulation.join();
+        } catch (InterruptedException ignored) {
+        }
+        _view.getSimulationButton().setText("Start Simulation");
+        _view.getSimulationButton().setActionCommand("start");
     }
 }
