@@ -46,12 +46,12 @@ public class JBoard extends JPanel implements Board, MouseListener {
 
     public void changeDimensions(int width, int height) {
         _board = new boolean[height][width];
-        trigger_update();
+        repaint();
     }
 
     public void toggleSpotAt(int x, int y) {
         _board[y][x] = !_board[y][x];
-        trigger_update();
+        repaint();
     }
 
     public void randomlyFill() {
@@ -71,10 +71,13 @@ public class JBoard extends JPanel implements Board, MouseListener {
                 _board[y][x] = false;
             }
         }
-        trigger_update();
+        repaint();
     }
 
     public boolean getSpotAt(int x, int y) {
+        if (x < 0 || y < 0 || x > getSpotWidth() - 1 || y > getSpotHeight() - 1) {
+            throw new IllegalArgumentException("x and y must be in range of board.");
+        }
         return _board[y][x];
     }
 
@@ -118,7 +121,6 @@ public class JBoard extends JPanel implements Board, MouseListener {
     public void mouseClicked(MouseEvent e) {
         int x = e.getX() * getSpotWidth() / getWidth();
         int y = e.getY() * getSpotHeight() / getHeight();
-        System.out.println("(" + x + ", " + y + ")");
         for (BoardListener l : _listeners) {
             l.boardClicked(this, x, y);
         }
@@ -168,26 +170,5 @@ public class JBoard extends JPanel implements Board, MouseListener {
                 }
             }
         }
-    }
-
-    private void trigger_update() {
-        repaint();
-
-        // Not sure why, but need to schedule a call
-        // to repaint for a little bit into the future
-        // as well as the one we just did above
-        // in order to make sure that we don't end up
-        // with visual artifacts due to race conditions.
-
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ignored) {
-                }
-                repaint();
-            }
-        }).start();
-
     }
 }

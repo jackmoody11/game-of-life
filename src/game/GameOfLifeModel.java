@@ -102,12 +102,10 @@ public class GameOfLifeModel {
         // Find which spots to change in current board
         for (int x = 0; x < getBoard().getSpotWidth(); x++) {
             for (int y = 0; y < getBoard().getSpotHeight(); y++) {
-                boolean s = getBoard().getSpotAt(x, y);
                 int liveCount;
                 liveCount = getBoard().getNumberOfLiveNeighbors(_isTorusMode, x, y);
-                System.out.println(liveCount);
                 // Handle cases when spot is toggled
-                if (s) {
+                if (!getBoard().getSpotAt(x, y)) {
                     if (liveCount < _dieLessThanThresh && liveCount > _dieGreaterThanThresh) {
                         nextBoard.toggleSpotAt(x, y);
                     }

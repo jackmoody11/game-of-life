@@ -51,7 +51,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
         int height = dimension.getHeight();
 
         _view.getBoard().changeDimensions(width, height);
-        _model.setBoard(_view.getBoard());
         _view.revalidate();
     }
 
@@ -125,7 +124,6 @@ public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewL
 
     @Override
     public void update(GameOfLifeModel model, JBoard board) {
-        _view.setBoard(_model.getBoard());
         _view.repaint();
     }
 }
