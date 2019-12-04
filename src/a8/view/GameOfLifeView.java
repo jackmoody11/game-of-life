@@ -1,8 +1,8 @@
-package game.view;
+package a8.view;
 
-import game.board.Board;
-import game.board.JBoard;
-import game.model.GameOfLifeModel;
+import a8.board.Board;
+import a8.board.JBoard;
+import a8.model.GameOfLifeModel;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

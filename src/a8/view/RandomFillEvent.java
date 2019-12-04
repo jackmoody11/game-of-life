@@ -1,4 +1,4 @@
-package game.view;
+package a8.view;
 
 public class RandomFillEvent extends GameOfLifeViewEvent {
     @Override

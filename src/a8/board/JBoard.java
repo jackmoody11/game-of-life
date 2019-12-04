@@ -1,6 +1,6 @@
-package game.board;
+package a8.board;
 
-import game.view.BoardListener;
+import a8.view.BoardListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -125,8 +125,10 @@ public class JBoard extends JPanel implements Board, MouseListener {
         int heightDelta = getHeight() / getSpotHeight();
         int x = e.getX() / widthDelta;
         int y = e.getY() / heightDelta;
-        for (BoardListener l : _listeners) {
-            l.boardClicked(this, x, y);
+        if (x < getSpotWidth() && y < getSpotHeight()) {
+            for (BoardListener l : _listeners) {
+                l.boardClicked(this, x, y);
+            }
         }
     }
 

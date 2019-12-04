@@ -1,8 +1,8 @@
-package game.controller;
+package a8.controller;
 
-import game.board.JBoard;
-import game.model.GameOfLifeModel;
-import game.view.*;
+import a8.board.JBoard;
+import a8.model.GameOfLifeModel;
+import a8.view.*;
 
 
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {

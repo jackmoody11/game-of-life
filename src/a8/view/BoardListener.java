@@ -1,6 +1,6 @@
-package game.view;
+package a8.view;
 
-import game.board.Board;
+import a8.board.Board;
 
 public interface BoardListener {
     public void boardClicked(Board board, int x, int y);

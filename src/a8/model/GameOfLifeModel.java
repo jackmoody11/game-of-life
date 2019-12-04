@@ -1,7 +1,7 @@
-package game.model;
+package a8.model;
 
-import game.controller.GameOfLifeObserver;
-import game.board.JBoard;
+import a8.controller.GameOfLifeObserver;
+import a8.board.JBoard;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package game.view;
+package a8.view;
 
 public class ThresholdEvent extends GameOfLifeViewEvent {
     private boolean _isDie, _isLessThan;

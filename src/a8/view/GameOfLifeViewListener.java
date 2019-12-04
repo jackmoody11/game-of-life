@@ -1,4 +1,4 @@
-package game.view;
+package a8.view;
 
 public interface GameOfLifeViewListener {
     void handleGameOfLifeViewEvent(GameOfLifeViewEvent e);

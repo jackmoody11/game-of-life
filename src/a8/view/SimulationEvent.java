@@ -1,4 +1,4 @@
-package game.view;
+package a8.view;
 
 public class SimulationEvent extends GameOfLifeViewEvent {
     private String _simulationCommand;

@@ -1,4 +1,4 @@
-package game.board;
+package a8.board;
 
 public interface Board {
 

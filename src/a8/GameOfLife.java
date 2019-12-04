@@ -1,8 +1,8 @@
-package game;
+package a8;
 
-import game.controller.GameOfLifeController;
-import game.model.GameOfLifeModel;
-import game.view.GameOfLifeView;
+import a8.controller.GameOfLifeController;
+import a8.model.GameOfLifeModel;
+import a8.view.GameOfLifeView;
 
 import javax.swing.*;
 

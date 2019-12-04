@@ -1,6 +1,6 @@
-package game.controller;
+package a8.controller;
 
-import game.model.GameOfLifeModel;
+import a8.model.GameOfLifeModel;
 
 import javax.swing.SwingUtilities;
 
@@ -20,6 +20,7 @@ public class Simulation extends Thread {
     }
 
     public void run() {
+        int initialSimulationSpeed = _simulationSpeed;
         while (!_done) {
             try {
                 Thread.sleep(_simulationSpeed);
@@ -33,7 +34,7 @@ public class Simulation extends Thread {
                     final long start = System.currentTimeMillis();
                     _model.setNextGeneration();
                     final long end = System.currentTimeMillis();
-                    _simulationSpeed = (int) (end - start);
+                    _simulationSpeed = Math.max((int) (end - start), initialSimulationSpeed);
                 }
             });
         }

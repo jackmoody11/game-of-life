@@ -1,4 +1,4 @@
-package game.view;
+package a8.view;
 
 public class TorusToggleEvent extends GameOfLifeViewEvent {
     private boolean _selected;
