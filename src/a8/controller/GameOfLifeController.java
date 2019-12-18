@@ -3,6 +3,7 @@ package a8.controller;
 import a8.board.JBoard;
 import a8.model.GameOfLifeModel;
 import a8.view.*;
+import a8.view.event.*;
 
 
 public class GameOfLifeController implements GameOfLifeObserver, GameOfLifeViewListener {

@@ -1,4 +1,4 @@
-package a8.view;
+package a8.view.event;
 
 public class DimensionEvent extends GameOfLifeViewEvent {
     private int _width, _height;

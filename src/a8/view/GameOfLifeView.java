@@ -3,6 +3,7 @@ package a8.view;
 import a8.board.Board;
 import a8.board.JBoard;
 import a8.model.GameOfLifeModel;
+import a8.view.event.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

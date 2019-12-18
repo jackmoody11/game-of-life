@@ -1,4 +1,4 @@
-package a8.view;
+package a8.view.event;
 
 public class SimulationSpeedEvent extends GameOfLifeViewEvent {
     private int _speed;

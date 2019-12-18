@@ -1,5 +1,7 @@
 package a8.view;
 
+import a8.view.event.GameOfLifeViewEvent;
+
 public interface GameOfLifeViewListener {
     void handleGameOfLifeViewEvent(GameOfLifeViewEvent e);
 
