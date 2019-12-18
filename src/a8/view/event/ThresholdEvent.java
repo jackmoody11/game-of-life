@@ -4,7 +4,7 @@ public class ThresholdEvent extends GameOfLifeViewEvent {
     private boolean _isDie, _isLessThan;
     private int _value;
 
-    ThresholdEvent(int value, boolean isDie, boolean isLessThan) {
+    public ThresholdEvent(int value, boolean isDie, boolean isLessThan) {
         _value = value;
         _isDie = isDie;
         _isLessThan = isLessThan;

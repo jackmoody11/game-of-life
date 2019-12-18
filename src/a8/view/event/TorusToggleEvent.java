@@ -3,7 +3,7 @@ package a8.view.event;
 public class TorusToggleEvent extends GameOfLifeViewEvent {
     private boolean _selected;
 
-    TorusToggleEvent(boolean selected) {
+    public TorusToggleEvent(boolean selected) {
         _selected = selected;
     }
 

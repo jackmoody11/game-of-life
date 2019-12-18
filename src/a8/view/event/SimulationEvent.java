@@ -3,7 +3,7 @@ package a8.view.event;
 public class SimulationEvent extends GameOfLifeViewEvent {
     private String _simulationCommand;
 
-    SimulationEvent(String cmd) {
+    public SimulationEvent(String cmd) {
         _simulationCommand = cmd;
     }
 
