@@ -22,7 +22,7 @@ public class Simulation extends Thread {
     public void run() {
         while (!_done) {
             try {
-                Thread.sleep(_model.getSimulationSpeed());
+                Thread.sleep(_simulationSpeed);
             } catch (InterruptedException e) {
                 throw new RuntimeException("Unexpected interrupt", e);
             }
