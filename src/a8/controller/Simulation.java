@@ -20,10 +20,9 @@ public class Simulation extends Thread {
     }
 
     public void run() {
-        int initialSimulationSpeed = _simulationSpeed;
         while (!_done) {
             try {
-                Thread.sleep(_simulationSpeed);
+                Thread.sleep(_model.getSimulationSpeed());
             } catch (InterruptedException e) {
                 throw new RuntimeException("Unexpected interrupt", e);
             }
@@ -34,7 +33,7 @@ public class Simulation extends Thread {
                     final long start = System.currentTimeMillis();
                     _model.setNextGeneration();
                     final long end = System.currentTimeMillis();
-                    _simulationSpeed = Math.max((int) (end - start), initialSimulationSpeed);
+                    _simulationSpeed = Math.max((int) (end - start), _model.getSimulationSpeed());
                 }
             });
         }
